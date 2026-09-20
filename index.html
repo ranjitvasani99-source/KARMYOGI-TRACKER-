@@ -1,222 +1,73 @@
-<!doctype html>
-<html lang="gu">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#6d28d9">
-<title>કર્મયોગી Life Tracker</title>
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="કર્મયોગી">
-<meta name="theme-color" content="#6d28d9">
-
+<!doctype html><html lang="gu"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d28d9"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png"><title>Karmayogi Life Tracker</title>
 <style>
-:root{--p:#6d28d9;--p2:#8b5cf6;--bg:#f5f3ff;--card:#fff;--text:#171717;--muted:#6b7280;--ok:#16a34a;--line:#e5e7eb}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#ede9fe,#f8fafc 32%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
-.app{max-width:720px;margin:auto;padding:14px 14px 90px}.hero{background:linear-gradient(135deg,#4c1d95,#7c3aed);color:white;border-radius:24px;padding:20px;box-shadow:0 12px 30px #4c1d9526}.hero h1{margin:0;font-size:25px}.hero p{margin:6px 0 0;opacity:.9}.quote{margin-top:14px;background:#ffffff18;border:1px solid #ffffff30;padding:11px;border-radius:14px;font-size:13px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 5px 18px #11111108}.stat b{font-size:23px}.stat span{display:block;color:var(--muted);font-size:12px;margin-top:2px}.card{margin-top:12px}.card h2{font-size:16px;margin:0 0 11px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}.row:last-child{border-bottom:0}.row label{font-size:14px;flex:1}.check{width:22px;height:22px;accent-color:var(--p)}input[type=text],input[type=number],textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;font:inherit;background:#fff}textarea{min-height:75px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}.btn{border:0;border-radius:12px;padding:11px 14px;background:var(--p);color:white;font-weight:700;cursor:pointer}.btn.secondary{background:#ede9fe;color:#4c1d95}.btn.ok{background:var(--ok)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.progress{height:12px;background:#ede9fe;border-radius:20px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);width:0;transition:.25s}.small{font-size:12px;color:var(--muted)}.tabs{position:fixed;bottom:0;left:0;right:0;background:#ffffffef;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}.tabs button{flex:1;max-width:180px;border:0;background:none;padding:10px 5px;font-size:12px;color:var(--muted)}.tabs button.active{color:var(--p);font-weight:800}.tab{display:none}.tab.active{display:block}.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#f3e8ff;color:#6b21a8;font-size:11px;font-weight:700}.danger{color:#b91c1c}.center{text-align:center}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{padding:8px 2px;text-align:center;border-radius:10px;background:#f3f4f6;font-size:11px}.day.good{background:#dcfce7;color:#166534}.day.mid{background:#fef3c7;color:#92400e}.day.today{outline:2px solid var(--p)}@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.hero h1{font-size:22px}}
-
-.chart{height:180px;display:flex;align-items:flex-end;gap:4px;padding:12px 4px 0;border-bottom:1px solid #ddd}
-.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
-.bar2{width:100%;max-width:16px;background:linear-gradient(180deg,#8b5cf6,#6d28d9);border-radius:7px 7px 2px 2px;min-height:2px}
-.col small{font-size:9px;color:#777}.mission{background:linear-gradient(135deg,#111827,#4c1d95);color:#fff;border-radius:18px;padding:15px}.mission h3{margin:0 0 8px}.xp{height:10px;background:#ffffff33;border-radius:20px;overflow:hidden}.xp div{height:100%;background:#c4b5fd;width:0}.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:#ede9fe;color:#5b21b6;font-size:11px;font-weight:700}
-
-</head>
-<body>
-<div id="installBox" class="card" style="display:none;margin-bottom:10px">
-<b>📲 Home Screen App</b>
-<div class="small" style="margin:5px 0 8px">આ tracker ને phone ના home screen પર મૂકવા Install/Shortcut વાપરો.</div>
-<button id="installBtn" class="btn" onclick="installApp()">➕ Install App</button>
-</div>
-<div class="app">
-<section class="hero">
-  <span class="badge">કર્મયોગી • Daily Discipline</span>
-  <h1>🕉️ Gita Life Tracker</h1>
-  <p>પોતાને જીતો • કર્તવ્ય કરો • ધ્યેય તરફ આગળ વધો</p>
-  <div class="quote">“કર્મ પર ધ્યાન — પરિણામની ચિંતા વગર શ્રેષ્ઠ પ્રયત્ન.”<br><small>ભગવદ્ ગીતા 2.47ના કર્મયોગના ભાવ પર આધારિત</small></div>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#f5f3ff;color:#222}
+header{background:#6d28d9;color:#fff;padding:20px 15px}.wrap{max-width:720px;margin:auto;padding:12px}
+h1{margin:0}.sub{opacity:.9}.card{background:#fff;border-radius:16px;padding:15px;margin:12px 0;box-shadow:0 2px 10px #0001}
+.title{font-weight:800;font-size:17px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+label{display:block;padding:10px 0;border-bottom:1px solid #eee}input[type=text],input[type=number],textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:10px;margin-top:6px;font:inherit}textarea{min-height:80px}
+button{border:0;border-radius:10px;padding:10px 13px;background:#6d28d9;color:#fff;font-weight:700}.secondary{background:#eee;color:#333}
+.progress{height:11px;background:#eee;border-radius:20px;margin-top:10px;overflow:hidden}.bar{height:100%;background:#7c3aed;width:0}
+.tab{display:none}.active{display:block}nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:center;gap:4px;padding:7px;z-index:9}nav button{background:transparent;color:#555}
+main{padding-bottom:65px}.quote{color:#4c1d95;font-style:italic}.install{background:#fff7ed}
+</style></head><body>
+<header><div class="wrap"><h1>⚔️ Karmayogi Life Tracker</h1><div class="sub">કર્મ • શિસ્ત • ધ્યેય • આત્મવિકાસ</div></div></header>
+<main class="wrap">
+<section id="today" class="tab active">
+<div class="card install"><div class="row"><div><b>📲 Home Screen App</b><br><small>Install માટે નીચેનું button અથવા Chrome menu વાપરો.</small></div><button onclick="installApp()">Install</button></div></div>
+<div class="card"><div class="row"><b>⚔️ Today's Warrior Mission</b><b id="pct">0%</b></div><div class="progress"><div id="bar" class="bar"></div></div><small id="streak">Streak: 0 days</small></div>
+<div class="card"><b>🎯 આજનું મુખ્ય લક્ષ્ય</b><input id="goal" type="text" placeholder="આજે સૌથી મહત્વનું કામ"></div>
+<div class="card"><b>🕉️ Spiritual Discipline</b>
+<label><input type="checkbox" data-k="prayer"> 10 મિનિટ પ્રાર્થના / ધ્યાન</label>
+<label><input type="checkbox" data-k="gita"> ગીતા / આધ્યાત્મિક વાંચન</label>
+<label><input type="checkbox" data-k="gratitude"> કૃતજ્ઞતા / સારા વિચાર</label></div>
+<div class="card"><b>📚 Exam & Knowledge</b>
+<label><input type="checkbox" data-k="study"> Study target પૂર્ણ</label>
+<label><input type="checkbox" data-k="mcq"> MCQ practice</label>
+<label>Study minutes<input id="studyMin" type="number" min="0" placeholder="90"></label></div>
+<div class="card"><b>💼 Job / Duty</b>
+<label><input type="checkbox" data-k="job"> Job duty ઈમાનદારીથી પૂર્ણ</label>
+<label><input type="checkbox" data-k="focus"> Distraction control</label></div>
+<div class="card"><b>💪 Health</b>
+<label><input type="checkbox" data-k="exercise"> Exercise / walk</label>
+<label><input type="checkbox" data-k="sleep"> Sleep routine</label>
+<label><input type="checkbox" data-k="food"> Food discipline</label></div>
+<div class="card"><b>👨‍👩‍👦 Family</b>
+<label><input type="checkbox" data-k="family"> Family quality time</label>
+<label><input type="checkbox" data-k="respect"> પ્રેમ / સન્માનથી વાત</label></div>
+<div class="card"><b>💰 Money</b>
+<label><input type="checkbox" data-k="expense"> આજનો ખર્ચ નોંધ્યો</label>
+<label><input type="checkbox" data-k="saving"> અનાવશ્યક ખર્ચ ટાળ્યો</label></div>
+<div class="card"><b>🧠 Character / Self-Control</b>
+<label><input type="checkbox" data-k="anger"> ગુસ્સા પર નિયંત્રણ</label>
+<label><input type="checkbox" data-k="laziness"> આળસ સામે action</label>
+<label><input type="checkbox" data-k="phone"> Phone / distraction control</label>
+<label><input type="checkbox" data-k="ego"> અહંકારથી બચવાનો પ્રયત્ન</label></div>
+<div class="card"><b>🌙 Night Self-Audit</b><textarea id="reflection" placeholder="આજે શું સારું કર્યું? શું સુધારવું છે?"></textarea>
+<button onclick="saveToday()">💾 Save Today</button> <button class="secondary" onclick="resetToday()">Reset</button></div>
+<div class="card quote">“કર્મ કરવાનું તારો અધિકાર છે; પરિણામ પર આસક્તિ ન રાખ.”<br><small>— ભગવદ્ ગીતા 2.47</small></div>
 </section>
-
-<div class="card mission" style="margin-top:12px">
-<h3>⚔️ આજનું Warrior Mission</h3>
-<div id="missionText">આજે તમારી એક નબળાઈ પર જીત મેળવો.</div>
-<div style="margin:9px 0 5px;font-size:12px">Daily XP: <b id="xpText">0/100</b></div>
-<div class="xp"><div id="xpBar"></div></div>
-<div style="margin-top:10px;font-size:12px;opacity:.9">🕉️ “પોતાને જીતવું એ સૌથી મોટી જીત.”</div>
-</div>
-<div id="today" class="tab active">
-  <div class="grid">
-    <div class="stat"><b id="pct">0%</b><span>આજની consistency</span></div>
-    <div class="stat"><b id="streak">0 🔥</b><span>વર્તમાન streak</span></div>
-  </div>
-
-  <div class="card">
-    <h2>🎯 આજનું મુખ્ય ધ્યેય</h2>
-    <input id="goal" type="text" placeholder="આજે સૌથી મહત્વનું કામ શું છે?">
-    <div class="small" style="margin-top:7px">એક દિવસ = એક મુખ્ય જીત.</div>
-  </div>
-
-  <div class="card"><h2>🕉️ આત્મા & આધ્યાત્મિકતા</h2>
-    <div class="row"><label>પ્રાર્થના / ઈશ્વર સ્મરણ</label><input class="check" data-k="prayer" type="checkbox"></div>
-    <div class="row"><label>જપ / ધ્યાન 10 મિનિટ</label><input class="check" data-k="meditation" type="checkbox"></div>
-    <div class="row"><label>ગીતા/આધ્યાત્મિક વાંચન 10 મિનિટ</label><input class="check" data-k="gita" type="checkbox"></div>
-  </div>
-
-  <div class="card"><h2>📚 પરીક્ષા & જ્ઞાન</h2>
-    <div class="row"><label>Focused study session</label><input class="check" data-k="study" type="checkbox"></div>
-    <div class="row"><label>MCQ practice</label><input class="check" data-k="mcq" type="checkbox"></div>
-    <div class="two"><input id="minutes" type="number" min="0" placeholder="Study minutes"><input id="mcqs" type="number" min="0" placeholder="MCQs"></div>
-  </div>
-
-  <div class="card"><h2>💼 કર્મ / Job</h2>
-    <div class="row"><label>આજની job duty ઈમાનદારીથી પૂર્ણ</label><input class="check" data-k="job" type="checkbox"></div>
-    <div class="row"><label>Documentation / pending work clear</label><input class="check" data-k="work" type="checkbox"></div>
-  </div>
-
-  <div class="card"><h2>🏃 શરીર & Health</h2>
-    <div class="row"><label>30 મિનિટ walk / exercise</label><input class="check" data-k="exercise" type="checkbox"></div>
-    <div class="row"><label>પૂરતું પાણી / સારી diet</label><input class="check" data-k="food" type="checkbox"></div>
-    <div class="row"><label>સમયસર ઊંઘ માટે તૈયારી</label><input class="check" data-k="sleep" type="checkbox"></div>
-  </div>
-
-  <div class="card"><h2>👨‍👩‍👧 પરિવાર</h2>
-    <div class="row"><label>15–30 મિનિટ quality family time</label><input class="check" data-k="family" type="checkbox"></div>
-    <div class="row"><label>ઘરમાં પ્રેમથી વાત / મદદ</label><input class="check" data-k="help" type="checkbox"></div>
-  </div>
-
-  <div class="card"><h2>💰 ધન વ્યવસ્થા</h2>
-    <div class="two"><input id="expense" type="number" min="0" placeholder="આજનો ખર્ચ ₹"><input id="saving" type="number" min="0" placeholder="Saving ₹"></div>
-    <div class="row"><label>અનાવશ્યક ખર્ચ ટાળ્યો</label><input class="check" data-k="money" type="checkbox"></div>
-  </div>
-
-  <div class="card"><h2>🧠 ચરિત્ર / Warrior Mind</h2>
-    <div class="row"><label>Mobile / social media control</label><input class="check" data-k="mobile" type="checkbox"></div>
-    <div class="row"><label>ગુસ્સો, અહંકાર, આળસ પર નિયંત્રણ</label><input class="check" data-k="anger" type="checkbox"></div>
-    <div class="row"><label>આજે સત્ય અને self-control જાળવ્યો</label><input class="check" data-k="truth" type="checkbox"></div>
-  </div>
-
-  <div class="card"><h2>🌙 રાત્રિ આત્મપરીક્ષણ</h2>
-    <textarea id="win" placeholder="આજે મારી સૌથી સારી જીત શું હતી?"></textarea><br><br>
-    <textarea id="learn" placeholder="આજે મારી ભૂલ / શીખ શું હતી?"></textarea><br><br>
-    <textarea id="tomorrow" placeholder="કાલે 1% વધુ સારું શું કરું?"></textarea>
-    <div class="actions"><button class="btn ok" onclick="save()">💾 આજનો દિવસ Save</button><button class="btn secondary" onclick="resetChecks()">Reset checks</button></div>
-  </div>
-</div>
-
-<div id="goals" class="tab">
-  <div class="card"><h2>🎯 90-Day Life Direction</h2><textarea id="longGoal" placeholder="આગામી 90 દિવસમાં હું કઈ વ્યક્તિ બનવા માંગું છું?"></textarea></div>
-  <div class="card"><h2>📅 આ મહિનાના 3 મુખ્ય goals</h2><input id="m1" placeholder="Goal 1"><br><br><input id="m2" placeholder="Goal 2"><br><br><input id="m3" placeholder="Goal 3"><div class="actions"><button class="btn" onclick="saveGoals()">Save Goals</button></div></div>
-  <div class="card"><h2>⚔️ Karmayogi Rules</h2><div class="small">1. Duty પહેલા, excuse પછી નહીં.<br>2. Outcome કરતાં effort પર focus.<br>3. શરીર, મન, સમય અને પૈસા — ચારેયનું સંચાલન.<br>4. બીજાને હરાવવું નહીં; પોતાની નબળાઈને હરાવવી.<br>5. રોજ 1% સુધારો.</div></div>
-</div>
-
-<div id="history" class="tab">
-  <div class="card"><h2>📊 Progress</h2><div class="progress"><div id="bar" class="bar"></div></div><p class="small" id="summary">Save કર્યા પછી અહીં progress દેખાશે.</p></div>
-  <div class="card"><h2>🗓️ છેલ્લા 30 દિવસ</h2><div class="calendar" id="calendar"></div></div><div class="card"><h2>📈 14-Day Consistency</h2><div class="chart" id="chart"></div><div class="small">દરેક column = તે દિવસની checklist consistency</div></div>
-
-  <div class="card"><h2>📈 Recent records</h2><div id="records"></div></div>
-</div>
-
-<div id="settings" class="tab">
-  <div class="card"><h2>⏰ Daily Reminder</h2><div class="two"><input id="morning" type="time"><input id="night" type="time"></div><p class="small">Browser notification permission આપ્યા પછી reminder કામ કરી શકે છે; Androidમાં reliable background alarm માટે native app વધુ યોગ્ય છે.</p><div class="actions"><button class="btn" onclick="enableNotify()">🔔 Notifications</button><button class="btn secondary" onclick="saveSettings()">Save</button></div></div>
-  <div class="card"><h2>💾 Data</h2><button class="btn secondary" onclick="exportData()">Export JSON</button> <button class="btn secondary" onclick="clearAll()">Clear all data</button></div>
-</div>
-</div>
-
-<nav class="tabs">
-<button class="active" onclick="tab('today',this)">🏠<br>Today</button>
-<button onclick="tab('goals',this)">🎯<br>Goals</button>
-<button onclick="tab('history',this)">📊<br>Progress</button>
-<button onclick="tab('settings',this)">⚙️<br>Settings</button>
-</nav>
-
+<section id="goals" class="tab"><div class="card"><b>🎯 90-Day Life Mission</b><textarea id="mission" placeholder="આગામી 90 દિવસનું મુખ્ય mission"></textarea></div>
+<div class="card"><b>📅 Monthly Goals</b><textarea id="monthly" placeholder="આ મહિના માટે 3 મુખ્ય goals"></textarea><button onclick="saveGoals()">Save Goals</button></div></section>
+<section id="progress" class="tab"><div class="card"><b>📊 Saved Progress</b><div id="history">No records yet.</div></div>
+<div class="card"><button onclick="backup()">⬇️ Backup JSON</button><button class="secondary" onclick="clearAll()">Clear Data</button></div></section>
+<section id="settings" class="tab"><div class="card"><b>⚙️ Settings</b><p>તમારો data આ device/browser ના local storage માં રહે છે.</p><small>Backup માટે Progress → Backup JSON વાપરો.</small></div></section>
+</main>
+<nav><button onclick="tab('today')">🏠 Today</button><button onclick="tab('goals')">🎯 Goals</button><button onclick="tab('progress')">📊 Progress</button><button onclick="tab('settings')">⚙️ Settings</button></nav>
 <script>
-const KEY='karmayogiTrackerV2', todayKey=()=>new Date().toISOString().slice(0,10);
-let db=JSON.parse(localStorage.getItem(KEY)||'{"days":{},"goals":{},"settings":{}}');
-const checks=[...document.querySelectorAll('.check')];
-function getDay(){return db.days[todayKey()]||{}}
-
-const missions=[
-"આજે આળસને હરાવો — 25 મિનિટ focused કામ કરો.",
-"આજે ક્રોધ પર વિજય — જવાબ આપતા પહેલાં 3 શ્વાસ લો.",
-"આજે mobile પર નિયંત્રણ — અનાવશ્યક scrolling ટાળો.",
-"આજે શરીર માટે ફરજ — 30 મિનિટ ચાલો/વ્યાયામ કરો.",
-"આજે જ્ઞાનનું શસ્ત્ર — focused study session પૂર્ણ કરો.",
-"આજે પરિવાર માટે સમય — 20 મિનિટ સંપૂર્ણ હાજરીથી રહો.",
-"આજે ધન શિસ્ત — એક અનાવશ્યક ખર્ચ ટાળો.",
-"આજે સત્ય અને self-control — મન, વાણી અને કર્મમાં એકરૂપતા રાખો."
-];
-function renderMission(){
- const idx=new Date().getDate()%missions.length;
- document.getElementById('missionText').textContent=missions[idx];
- const p=Number(getDay().pct||0);
- document.getElementById('xpText').textContent=p+'/100';
- document.getElementById('xpBar').style.width=p+'%';
-}
-function renderChart(){
- let out='',dt=new Date();
- let vals=[];
- for(let i=0;i<14;i++){let k=dt.toISOString().slice(0,10),p=Number(db.days[k]?.pct||0);vals.unshift({k,p});dt.setDate(dt.getDate()-1)}
- vals.forEach(x=>{let day=x.k.slice(8,10);out+=`<div class="col"><small>${x.p}%</small><div class="bar2" style="height:${Math.max(2,x.p*1.35)}px"></div><small>${day}</small></div>`});
- document.getElementById('chart').innerHTML=out;
-}
-
-function load(){
- let d=getDay(); document.getElementById('goal').value=d.goal||'';
- checks.forEach(c=>c.checked=!!d[c.dataset.k]);
- ['minutes','mcqs','expense','saving','win','learn','tomorrow'].forEach(id=>document.getElementById(id).value=d[id]||'');
- let g=db.goals; document.getElementById('longGoal').value=g.long||'';['m1','m2','m3'].forEach(id=>document.getElementById(id).value=g[id]||'');
- let s=db.settings; document.getElementById('morning').value=s.morning||'06:00';document.getElementById('night').value=s.night||'22:00';
- update();
-}
-function update(){
- renderMission();
- const n=checks.length, done=checks.filter(c=>c.checked).length, pct=Math.round(done/n*100);
- document.getElementById('pct').textContent=pct+'%'; document.getElementById('bar').style.width=pct+'%';
- document.getElementById('streak').textContent=streak()+' 🔥';
-}
-checks.forEach(c=>c.addEventListener('change',update));
-function save(){
- let d=getDay(); checks.forEach(c=>d[c.dataset.k]=c.checked);
- ['goal','minutes','mcqs','expense','saving','win','learn','tomorrow'].forEach(id=>d[id]=document.getElementById(id).value);
- d.pct=Math.round(checks.filter(c=>c.checked).length/checks.length*100); db.days[todayKey()]=d; persist(); update(); renderHistory();
- alert((d.pct>=80?'🔥 આજનો દિવસ warrior level! ':'💪 શરૂઆત સારી છે — કાલે 1% વધુ. ')+'આજનો દિવસ save થયો ✅');
-}
-function persist(){localStorage.setItem(KEY,JSON.stringify(db))}
-function streak(){let s=0,dt=new Date();while(true){let k=dt.toISOString().slice(0,10),d=db.days[k];if(!d||Number(d.pct||0)<70)break;s++;dt.setDate(dt.getDate()-1)}return s}
-function resetChecks(){checks.forEach(c=>c.checked=false);update()}
-function tab(id,el){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));el.classList.add('active');if(id==='history')renderHistory()}
-function saveGoals(){db.goals={long:longGoal.value,m1:m1.value,m2:m2.value,m3:m3.value};persist();alert('Goals saved 🎯')}
-function renderHistory(){
- let arr=Object.entries(db.days).sort((a,b)=>b[0].localeCompare(a[0]));
- let avg=arr.length?Math.round(arr.reduce((s,[,d])=>s+Number(d.pct||0),0)/arr.length):0;
- document.getElementById('summary').textContent=`${arr.length} દિવસ logged • Average consistency ${avg}% • Current streak ${streak()} દિવસ`;
- let rec=arr.slice(0,12).map(([k,d])=>`<div class="row"><label><b>${k}</b><br><span class="small">${d.goal||'No main goal'}</span></label><b>${d.pct||0}%</b></div>`).join('');
- document.getElementById('records').innerHTML=rec||'<div class="small">હજુ કોઈ record નથી.</div>';
- let out='',dt=new Date();for(let i=0;i<30;i++){let k=dt.toISOString().slice(0,10),d=db.days[k],p=Number(d?.pct||0),cl=p>=80?'good':p>=50?'mid':'';out+=`<div class="day ${cl} ${i===0?'today':''}">${dt.getDate()}<br>${p}%</div>`;dt.setDate(dt.getDate()-1)}document.getElementById('calendar').innerHTML=out; renderChart();
-}
-function enableNotify(){if('Notification' in window) Notification.requestPermission().then(x=>alert(x==='granted'?'Notifications enabled 🔔':'Permission not granted'))}
-function saveSettings(){db.settings={morning:morning.value,night:night.value};persist();alert('Reminder settings saved')}
-function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='karmayogi-life-data.json';a.click()}
-function clearAll(){if(confirm('બધો tracker data delete કરવો છે?')){localStorage.removeItem(KEY);location.reload()}}
-load();renderHistory();renderMission();
-
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
- e.preventDefault(); deferredPrompt=e;
- const b=document.getElementById('installBox'); if(b)b.style.display='block';
-});
-async function installApp(){
- if(deferredPrompt){
-   deferredPrompt.prompt();
-   try{await deferredPrompt.userChoice;}catch(e){}
-   deferredPrompt=null;
- }else{
-   alert('Chromeમાં ⋮ Menu → Add to Home screen / Install app પસંદ કરો. જો option ન દેખાય તો આ page HTTPS hosting પર ખુલેલું હોવું જોઈએ.');
- }
-}
-if('serviceWorker' in navigator){
- window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-}
-
-</script>
-</body></html>
+"use strict";let promptEvent=null;const key=()=>new Date().toISOString().slice(0,10);
+function data(){let d={};document.querySelectorAll("[data-k]").forEach(x=>d[x.dataset.k]=x.checked);d.goal=document.getElementById("goal").value;d.studyMin=document.getElementById("studyMin").value;d.reflection=document.getElementById("reflection").value;return d}
+function update(){let a=[...document.querySelectorAll("[data-k]")],n=a.filter(x=>x.checked).length,p=Math.round(n/a.length*100);document.getElementById("pct").textContent=p+"%";document.getElementById("bar").style.width=p+"%"}
+function saveToday(){localStorage.setItem("karm_"+key(),JSON.stringify(data()));update();alert("આજનો record save થયો ✅")}
+function load(){let d=JSON.parse(localStorage.getItem("karm_"+key())||"{}");document.querySelectorAll("[data-k]").forEach(x=>x.checked=!!d[x.dataset.k]);["goal","studyMin","reflection"].forEach(id=>{if(d[id]!=null)document.getElementById(id).value=d[id]});let g=JSON.parse(localStorage.getItem("karm_goals")||"{}");mission.value=g.mission||"";monthly.value=g.monthly||"";update()}
+function resetToday(){document.querySelectorAll("[data-k]").forEach(x=>x.checked=false);goal.value="";studyMin.value="";reflection.value="";update()}
+function saveGoals(){localStorage.setItem("karm_goals",JSON.stringify({mission:mission.value,monthly:monthly.value}));alert("Goals saved ✅")}
+function tab(id){document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");if(id==="progress")history.innerHTML=Object.keys(localStorage).filter(k=>k.startsWith("karm_20")).sort().reverse().map(k=>"<div style='padding:6px;border-bottom:1px solid #eee'>"+k.replace("karm_","")+"</div>").join("")||"No records yet."}
+function backup(){let o={};for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k.startsWith("karm_"))o[k]=localStorage.getItem(k)}let a=document.createElement("a"),b=new Blob([JSON.stringify(o,null,2)],{type:"application/json"});a.href=URL.createObjectURL(b);a.download="karmayogi-backup.json";a.click()}
+function clearAll(){if(confirm("બધો local data delete કરવો છે?")){localStorage.clear();location.reload()}}
+function installApp(){if(promptEvent){promptEvent.prompt();promptEvent=null}else alert("Chrome ⋮ → Add to Home screen / Install app પસંદ કરો.")}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();promptEvent=e});window.addEventListener("load",()=>{load();if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{})});document.querySelectorAll("[data-k]").forEach(x=>x.onchange=update);
+</script></body></html>

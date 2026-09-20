@@ -1,10 +1,1 @@
-const CACHE='karmayogi-v3';
-self.addEventListener('install',e=>self.skipWaiting());
-self.addEventListener('activate',e=>e.waitUntil(clients.claim()));
-self.addEventListener('fetch',e=>{
-  if(e.request.method!=='GET') return;
-  e.respondWith(caches.open(CACHE).then(async c=>{
-    try{const r=await fetch(e.request); c.put(e.request,r.clone()); return r;}
-    catch(err){return c.match(e.request).then(r=>r||c.match('./index.html'));}
-  }));
-});
+const CACHE="karmayogi-v1";const A=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(A)).then(()=>self.skipWaiting())));self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;e.respondWith(fetch(e.request).then(r=>{let c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match("./index.html"))))});
